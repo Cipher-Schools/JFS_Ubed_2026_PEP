@@ -3,7 +3,7 @@ package project;
 public final class LoggerClass {
 
     public enum Level {
-        ERROR, WARNING, INFO
+        ERROR, WARNING, INFO, DEBUG
     }
 
     private LoggerClass() {}

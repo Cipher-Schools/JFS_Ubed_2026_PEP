@@ -1,0 +1,3 @@
+this is another file created using buffered write
+another line in buffered writerthis is another file created using buffered write
+another line in buffered writer

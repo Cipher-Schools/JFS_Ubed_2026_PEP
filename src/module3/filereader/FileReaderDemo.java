@@ -17,13 +17,13 @@ public class FileReaderDemo {
 				System.out.print((char) character);
 			}
 		} catch (IOException e) {
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		} finally {
 			// Always close the resource to prevent memory leaks
 			try {
 				reader.close();
 			} catch (IOException e) {
-				System.out.println(e.getStackTrace());
+				e.printStackTrace();
 			}
 		}
 	}

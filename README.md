@@ -52,8 +52,10 @@ Mastering the professional toolkit.
 Handling data flow and multitasking.
 
 - **File IO**:
-  - `FileReader`, `BufferedReader`
-  - Try-with-resources
+  - **Reading**: `FileReader`, `BufferedReader`
+  - **Writing**: `FileWriter`, `BufferedWriter`
+  - **Serialization**: `ObjectInputStream`, `ObjectOutputStream`, `Serializable` interface
+  - **Best Practices**: Try-with-resources, Exception Handling
 - **Multithreading**
 
 ## 🚀 Getting Started

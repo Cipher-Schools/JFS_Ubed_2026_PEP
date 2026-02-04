@@ -10,20 +10,15 @@ The project is organized into modules, each focusing on specific core and advanc
 
 Building the bedrock of Java development.
 
-- **Primitives**: Basic data types (`int`, `double`, `boolean`, etc.)
-- **Operators**: Arithmetic, relational, and logical operations.
-- **Conditionals**: Control flow with `if-else`, `switch`.
-- **Loops**: Iterative execution (`for`, `while`, `do-while`).
-- **Arrays**: Single and multi-dimensional arrays.
-- **Strings**: String manipulation and `StringBuilder`.
-- **Methods**: Function definition, parameters, and return types.
-- **OOP (Object-Oriented Programming)**:
-  - Classes & Objects
-  - Encapsulation
-  - Inheritance
-  - Polymorphism
-  - Abstraction (Interfaces & Abstract Classes)
-- **Generics**: Type safety and generic classes.
+- **Primitives**
+- **Operators**
+- **Conditionals**
+- **Loops**
+- **Arrays**
+- **Strings**
+- **Methods**
+- **OOP (Object-Oriented Programming)**
+- **Generics**
 
 ### **Module 2: Advanced Java & APIs**
 
@@ -34,18 +29,13 @@ Mastering the professional toolkit.
   - `Set` (HashSet, TreeSet)
   - `Map` (HashMap, LinkedHashMap)
   - Stack & Queue
-- **Exception Handling**: Try-catch blocks, custom exceptions, and hierarchy.
+- **Exception Handling**
 - **Java 8+ Features**:
   - Lambda Expressions
   - Functional Interfaces
   - Stream API
   - Optional Class
-- **SOLID Principles**:
-  - **S**ingle Responsibility Principle (SRP)
-  - **O**pen/Closed Principle (OCP)
-  - **L**iskov Substitution Principle (LSP)
-  - **I**nterface Segregation Principle (ISP)
-  - **D**ependency Inversion Principle (DIP)
+- **SOLID Principles**
 
 ### **Module 3: IO & Concurrency**
 
@@ -56,7 +46,13 @@ Handling data flow and multitasking.
   - **Writing**: `FileWriter`, `BufferedWriter`
   - **Serialization**: `ObjectInputStream`, `ObjectOutputStream`, `Serializable` interface
   - **Best Practices**: Try-with-resources, Exception Handling
-- **Multithreading**
+- **Multithreading**:
+  - **Thread Creation**, **Thread Lifecycle**, **Synchronization**, **Concurrency Issues**, **Race Conditions**, **Deadlock**
+  - **Thread Management**:
+    - `start()` vs `run()` methods
+    - `join()` for thread coordination
+    - `sleep()` for pausing execution
+    - Thread naming and identification
 
 ## 🚀 Getting Started
 

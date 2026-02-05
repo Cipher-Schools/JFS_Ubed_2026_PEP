@@ -1,4 +1,6 @@
-package project;
+package project.demo;
+
+import project.utils.LoggerClass;
 
 /**
  * DEMONSTRATION: LoggerClass with FileWriterUtil Integration

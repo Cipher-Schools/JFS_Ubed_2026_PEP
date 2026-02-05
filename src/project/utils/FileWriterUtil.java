@@ -1,4 +1,4 @@
-package project;
+package project.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.IOException;
  * Features:
  * - Automatic data folder creation if it doesn't exist
  * - Thread-safe file writing using synchronized method
+ * - Cross-platform path compatibility (Windows, Mac, Linux)
  */
 public final class FileWriterUtil {
     
@@ -27,6 +28,7 @@ public final class FileWriterUtil {
     
     /**
      * Writes a log message to a specified file in the data folder
+     * Cross-platform compatible (Windows, Mac, Linux)
      * 
      * @param filename The name of the file to write to (e.g., "error.log", "application.log")
      * @param message The log message to write

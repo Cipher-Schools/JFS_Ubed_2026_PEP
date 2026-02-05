@@ -32,3 +32,5 @@ ROADMAP.md
 
 ### Mac OS ###
 .DS_Store
+data
+*.class

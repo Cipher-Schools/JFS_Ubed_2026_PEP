@@ -76,8 +76,7 @@ public class BuySellDemo {
         Thread refiller = new Thread(() -> {
             try {
                     store.stockRefilling();
-                }
-            } catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }, "Refiller-Thread"); // Named thread for clear output

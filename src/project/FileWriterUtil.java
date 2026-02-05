@@ -15,7 +15,10 @@ import java.io.IOException;
  */
 public final class FileWriterUtil {
     
-    private static final String DATA_FOLDER = "data";
+    // Cross-platform data folder path (works on Windows, Mac, Linux)
+    // Uses current working directory + "data" folder
+    private static final String DATA_FOLDER_NAME = "data";
+    private static final String DATA_FOLDER_PATH = System.getProperty("user.dir") + File.separator + DATA_FOLDER_NAME;
     
     // Private constructor to prevent instantiation (Utility class pattern)
     private FileWriterUtil() {
@@ -30,16 +33,16 @@ public final class FileWriterUtil {
      * @throws IOException if an I/O error occurs during file writing
      */
     public static synchronized void writeToFile(String filename, String message) throws IOException {
-        // nsure data folder exists
-        File dataFolder = new File(DATA_FOLDER);
+        // Ensure data folder exists (cross-platform path)
+        File dataFolder = new File(DATA_FOLDER_PATH);
         if (!dataFolder.exists()) {
             boolean created = dataFolder.mkdirs();
             if (!created) {
-                throw new IOException("Failed to create data folder: " + DATA_FOLDER);
+                throw new IOException("Failed to create data folder: " + DATA_FOLDER_PATH);
             }
         }
         
-        // Create full file path
+        // Create full file path (File constructor handles path separators automatically)
         File logFile = new File(dataFolder, filename);
         
         // Write to file using try-with-resources (auto-closes resources)

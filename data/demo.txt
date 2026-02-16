@@ -1,4 +1,0 @@
-Welcome to Java Full Stack Preparation!
-Mastering Java requires understanding distinct concepts like SOLID principles, OOP, and IO.
-Keep coding and exploring new modules.
-You are all awesome students! Keep it up!

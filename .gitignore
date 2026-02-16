@@ -23,10 +23,6 @@
 hs_err_pid*
 
 # IntelliJ
-.idea/
-*.iml
-*.iws
-*.ipr
 out/
 
 # Eclipse
@@ -44,10 +40,6 @@ out/
 
 # Maven
 target/
-
-# Gradle
-.gradle/
-build/
 
 # Mac
 .DS_Store

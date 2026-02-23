@@ -1,57 +1,42 @@
-# REST API Demo
+# REST API Demo - Spring Boot
 
-This project demonstrates how to build a RESTful API using Spring Boot. It uses an in-memory database to store student records and covers key Spring Boot concepts.
+RESTful API implementation using Spring Boot demonstrating core Spring concepts, dependency injection, and layered architecture.
 
-## Concepts Covered
+## Topics Covered
 
-### 1. Spring Boot Annotations
+### Spring Boot Annotations
 
-- **@SpringBootApplication**: The main entry point.
-- **@RestController**: Handles HTTP requests.
-- **@Service**: Contains business logic.
-- **@Repository**: Manages data access.
-- **@Autowired**: Injects dependencies (Dependency Injection).
-- **@Primary**: Specifies the default bean when multiple beans of the same type exist.
-- **@Component**: Marks a class as a Spring Bean.
+- **@SpringBootApplication**: Application entry point
+- **@RestController**: HTTP request handling
+- **@Service**: Business logic layer
+- **@Repository**: Data access layer
+- **@Autowired**: Dependency injection
+- **@Primary**: Default bean selection when multiple implementations exist
+- **@Component**: Spring Bean marking
 
-### 2. Dependency Injection (DI)
+### Dependency Injection Pattern
 
-Spring manages object creation and dependency injection.
+- Spring manages object creation and lifecycle
+- Field injection with `@Autowired`
+- Constructor injection (recommended for testability)
+- **@Primary** annotation for resolving bean conflicts:
+  - `ServiceInter` interface
+  - `StudentService`: Primary implementation
+  - `UserService`: Alternative implementation
+  - Controller demonstrates primary bean injection
 
-- **Field Injection**: `@Autowired` on fields.
-- **Constructor Injection**: Recommended approach for better testability.
+### REST Endpoint Mappings
 
-### 3. REST Controller Mappings
+- `@GetMapping`: Resource retrieval
+- `@PostMapping`: Resource creation
+- `@PutMapping`: Resource updates
+- `@DeleteMapping`: Resource deletion
+- `@RequestBody`: JSON to Object binding
+- `@PathVariable`: URL parameter extraction
 
-- `@GetMapping`: Retrieve resources.
-- `@PostMapping`: Create resources.
-- `@PutMapping`: Update resources.
-- `@DeleteMapping`: Delete resources.
-- `@RequestBody`: Bind JSON to Objects.
-- `@PathVariable`: Extract values from URL.
+### Architecture Pattern
 
-### 4. Data Transfer Object (DTO)
-
-`StudentDTO` is used to transfer data between the Controller and Service, decoupling the API layer from the internal data structure.
-
-### 5. In-Memory Database
-
-A simple `HashMap` in `StudentRepo` simulates a database, teaching the separation of concerns without the complexity of SQL.
-
-## How to Run
-
-1. **Start the Application**:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-2. **Test Endpoints**:
-   - `GET /api` - Get all students
-   - `POST /api` - Add a student
-   - `GET /api/service` - Check which service implementation is used (`@Primary` demo)
-
-## Project Structure
-
-- `src/main/java/org/example/restapidemo/controller` - API Endpoints
-- `src/main/java/org/example/restapidemo/service` - Business Logic
-- `src/main/java/org/example/restapidemo/repository` - Data Storage
-- `src/main/java/org/example/restapidemo/dto` - Data Model
+- **Layered Architecture**: Controller → Service → Repository
+- **Data Transfer Object (DTO)**: `StudentDTO` for API and business logic decoupling
+- **In-Memory Storage**: HashMap-based repository simulating database
+- **Separation of Concerns**: Clean layer responsibility division

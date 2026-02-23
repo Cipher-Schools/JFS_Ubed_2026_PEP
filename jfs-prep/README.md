@@ -1,69 +1,23 @@
-# JFS Prep (Java Full Stack Preparation)
+# JFS Prep - Java Full Stack Preparation
 
-Welcome to the **JFS Prep** repository! This project contains a structured collection of Java code examples, exercises, and topics covered during the training.
+Structured Java learning curriculum with three comprehensive modules.
 
-## 📂 Project Structure
+## Modules
 
-The project is organized into modules, each focusing on specific core and advanced Java concepts.
+### [Module 1: Core Java Foundations](src/module1/README.md)
 
-### **Module 1: Core Java Foundations**
+Fundamental building blocks of Java programming - primitives, operators, control flow, arrays, strings, methods, generics, and object-oriented programming.
 
-Building the bedrock of Java development.
+### [Module 2: Advanced Java & APIs](src/module2/README.md)
 
-- **Primitives**
-- **Operators**
-- **Conditionals**
-- **Loops**
-- **Arrays**
-- **Strings**
-- **Methods**
-- **OOP (Object-Oriented Programming)**
-- **Generics**
+Professional development patterns - collections framework, comparators, exception handling, Java 8+ features (lambdas, streams, Optional), and SOLID principles.
 
-### **Module 2: Advanced Java & APIs**
+### [Module 3: IO & Concurrency](src/module3/README.md)
 
-Mastering the professional toolkit.
+File operations and multi-threaded programming - file I/O, serialization, thread management, synchronization, and concurrency problem solving.
 
-- **Collections Framework**:
-  - `List` (ArrayList, LinkedList)
-  - `Set` (HashSet, TreeSet)
-  - `Map` (HashMap, LinkedHashMap)
-  - Stack & Queue
-- **Exception Handling**
-- **Java 8+ Features**:
-  - Lambda Expressions
-  - Functional Interfaces
-  - Stream API
-  - Optional Class
-- **SOLID Principles**
+## Project
 
-### **Module 3: IO & Concurrency**
+### [Logger Utility System](src/project/README.md)
 
-Handling data flow and multitasking.
-
-- **File IO**:
-  - **Reading**: `FileReader`, `BufferedReader`
-  - **Writing**: `FileWriter`, `BufferedWriter`
-  - **Serialization**: `ObjectInputStream`, `ObjectOutputStream`, `Serializable` interface
-  - **Best Practices**: Try-with-resources, Exception Handling
-- **Multithreading**:
-  - **Thread Creation**, **Thread Lifecycle**, **Synchronization**, **Concurrency Issues**, **Race Conditions**, **Deadlock**
-  - **Thread Management**:
-    - `start()` vs `run()` methods
-    - `join()` for thread coordination
-    - `sleep()` for pausing execution
-    - Thread naming and identification
-
-## 🚀 Getting Started
-
-1. **Clone the repository**:
-   ```sh
-   git clone <repository-url>
-   ```
-2. **Open in IntelliJ IDEA** (or your preferred IDE).
-3. **Navigate to `src`** to explore the topics.
-4. **Run `Main.java`** or individual topic files to see the output.
-
----
-
-_Happy Coding!_ ☕ + 💻
+Practical application demonstrating file persistence, cross-platform compatibility, and logging patterns.

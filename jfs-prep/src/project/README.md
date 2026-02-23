@@ -1,140 +1,35 @@
-# Project Structure
+# Logger Utility System
 
-This project demonstrates a logger utility system with file persistence capabilities.
+Practical project demonstrating file persistence, cross-platform file handling, and logging patterns.
 
-## Directory Structure
+## Project Structure
 
-```
-src/project/
-├── utils/                  # Utility classes
-│   ├── DateTimeUtil.java   # Date/time formatting utility
-│   ├── FileWriterUtil.java # File writing utility (cross-platform)
-│   └── LoggerClass.java    # Main logger with multiple log levels
-└── demo/                   # Demonstration files
-    ├── LoggerDemo.java     # Main logger demonstration
-    └── PathDemo.java       # Cross-platform path demonstration
-```
+**Utilities** (`utils/`):
 
-## Utility Classes (`src/project/utils/`)
+- **DateTimeUtil**: Date and time formatting for timestamps
+- **FileWriterUtil**: Cross-platform file writing (Windows, Mac, Linux), auto-creates data folders, thread-safe operations, dynamic filenames
+- **LoggerClass**: Multi-level logging (ERROR, WARNING, INFO, DEBUG), ERROR logs automatically saved to files, console output for all levels, custom filename support
 
-### DateTimeUtil
+**Demo** (`demo/`):
 
-- Provides date and time formatting
-- Used by LoggerClass for timestamps
+- **LoggerDemo**: Comprehensive demonstration of logging features, shows basic logging, custom filenames, append behavior
+- **PathDemo**: Cross-platform path compatibility demonstration
 
-### FileWriterUtil
+## Key Concepts Demonstrated
 
-- Handles writing log messages to files
-- **Cross-platform compatible** (Windows, Mac, Linux)
-- Creates `data/` folder automatically
-- Thread-safe file writing
-- Dynamic filename support
-
-### LoggerClass
-
-- Main logging utility with 4 levels: ERROR, WARNING, INFO, DEBUG
-- ERROR logs are automatically saved to files
-- Console output for all levels
-- Supports custom filenames for organized logging
-
-## Demo Classes (`src/project/demo/`)
-
-### LoggerDemo
-
-- Comprehensive demonstration of logging features
-- Shows basic logging, custom filenames, and append behavior
-- Creates multiple log files in the `data/` folder
-
-### PathDemo
-
-- Demonstrates cross-platform path compatibility
-- Shows OS-specific path information
-- Tests file writing on current system
-
-## Usage
-
-### Mac/Linux
-
-#### Compile (from project root)
-
-```bash
-javac src/project/utils/*.java src/project/demo/*.java
-```
-
-#### Run Logger Demo
-
-```bash
-java -cp src project.demo.LoggerDemo
-```
-
-#### Run Path Demo
-
-```bash
-java -cp src project.demo.PathDemo
-```
-
-### Windows PowerShell
-
-#### Compile (from project root)
-
-```powershell
-# Navigate to src directory first
-cd src
-
-# Compile utilities then demos
-javac project\utils\*.java
-javac project\demo\*.java
-
-# Or compile all at once
-javac project\utils\*.java project\demo\*.java
-```
-
-#### Run Logger Demo
-
-```powershell
-# From src directory
-java project.demo.LoggerDemo
-```
-
-#### Run Path Demo
-
-```powershell
-# From src directory
-java project.demo.PathDemo
-```
-
-**Important for Windows**: Always compile from the `src` directory (where package structure starts), NOT from inside `project\demo\` or `project\utils\` folders.
-
-## Using LoggerClass in Your Code
-
-```java
-import project.utils.LoggerClass;
-
-public class YourClass {
-    public static void main(String[] args) {
-        // Basic logging
-        LoggerClass.info("Application started");
-        LoggerClass.warning("Low memory warning");
-        LoggerClass.debug("Debugging information");
-
-        // Error logging with default file (error.log)
-        LoggerClass.error("Something went wrong");
-
-        // Error logging with custom file
-        LoggerClass.error("Database error", "database_errors.log");
-    }
-}
-```
+- **Cross-platform compatibility**: Handles OS-specific file path separators
+- **Utility class pattern**: Reusable logging components separated from business logic
+- **File I/O**: Writing to files with proper resource management
+- **Thread-safe operations**: Synchronized file writing for concurrent access
+- **Auto-resource creation**: Automatic data folder creation
+- **Log levels**: Different severity levels for better log organization
+- **Custom configuration**: Dynamic filename support for organized logging
 
 ## Features
 
-✅ **Clean Separation**: Utilities separated from demos  
-✅ **Cross-Platform**: Works on Windows, Mac, and Linux  
-✅ **Dynamic Filenames**: No hardcoded paths  
-✅ **Thread-Safe**: Synchronized file writing  
-✅ **Auto-Creation**: Creates data folder automatically  
-✅ **Append Mode**: Preserves log history
-
-## Output
-
-Log files are created in the `data/` folder at the project root.
+- Clean separation between utilities and demos
+- Works across Windows, Mac, and Linux
+- Dynamic, non-hardcoded file paths
+- Thread-safe synchronized file writing
+- Automatic folder creation
+- Automatic log file appending to preserve history

@@ -1,192 +1,175 @@
 # Module 3: IO & Concurrency
 
-Master file operations and multi-threaded programming for robust applications.
+File operations and multi-threaded programming for building robust, data-persistent applications.
 
-## 📚 Topics Covered
+## Topics Covered
 
-### 1. **IO (Input/Output)** (`io/`)
+### File I/O (Input/Output)
 
-File and data stream operations.
+Reading and writing data to files:
 
-#### `filereader/`
+#### Reading Files
 
-Reading data from files:
+- **FileReader**: Sequential character-by-character reading from text files
+- **BufferedReader**: Wraps FileReader, provides buffering for efficient line-by-line reading
+- **Try-with-resources**: Java 7+ syntax for automatic resource closing
+- **readLine() vs read()**: Line-based vs character-based reading
+- **Performance**: Buffering improves performance significantly
+- **Encoding**: Handling different character encodings
 
-- `FileReader` - Character stream reading
-- `BufferedReader` - Efficient buffered reading
-- Try-with-resources pattern (automatic resource management)
-- Reading line-by-line vs character-by-character
+#### Writing Files
 
-#### `filewriter/`
+- **FileWriter**: Character stream writing to text files
+- **BufferedWriter**: Wraps FileWriter for efficient buffered writing
+- **Creating files**: FileWriter creates file if not exists, overwrites if exists
+- **Appending data**: Using FileWriter(filename, true) for append mode
+- **Flushing**: Ensuring data written to disk with flush()
+- **Resource management**: Closing streams to prevent resource leaks
 
-Writing data to files:
+#### Serialization (Object Persistence)
 
-- `FileWriter` - Character stream writing
-- `BufferedWriter` - Efficient buffered writing
-- Creating and overwriting files
-- Appending to existing files
+- **ObjectOutputStream**: Converts objects to byte stream, writes to file
+- **ObjectInputStream**: Reads byte stream, reconstructs objects
+- **Serializable interface**: Marker interface indicating object can be serialized
+- **SerialVersionUID**: Version control for serialized objects
+- **Transient keyword**: Exclude fields from serialization
+- **Use cases**: Saving application state, caching, RPC communication
 
-#### `objectstream/`
+#### Best Practices
 
-Serialization and deserialization:
+- Always use try-with-resources for automatic closing
+- Handle IOExceptions appropriately
+- Use BufferedReader/BufferedWriter for performance
+- Test for null after reading data
+- Validate data read from files
 
-- `ObjectOutputStream` - Writing objects to files
-- `ObjectInputStream` - Reading objects from files
-- `Serializable` interface
-- Use cases: Saving application state, data persistence
+### Concurrency (Multi-Threading)
 
-### 2. **Concurrency** (`concurrency/`)
+Multi-threaded programming for concurrent execution:
 
-Multi-threaded programming for concurrent execution.
+#### Thread Creation
 
-#### `basics/`
+- **Extending Thread class**: Create class extending Thread, override run()
+  - Advantage: Direct access to Thread methods
+  - Disadvantage: Can't extend other classes, less flexible
+- **Implementing Runnable interface**: Create class implementing Runnable, pass to Thread
+  - Advantage: Can extend other class, more flexible, lambda support
+  - Disadvantage: More setup code
+  - **Preferred approach**: Use Runnable for better design
 
-Thread fundamentals:
+#### Thread Lifecycle
 
-**`MyThread.java`**
+Thread states during execution:
 
-- Creating threads by extending `Thread` class
-- `start()` vs `run()` methods
-- When to use Thread extension
+- **NEW**: Thread created but not started
+- **RUNNABLE**: Thread ready to run, waiting for CPU
+- **RUNNING**: Thread currently executing
+- **BLOCKED/WAITING**: Thread waiting for resource or condition
+- **TERMINATED**: Thread finished execution
 
-**`MyRunnable.java`**
+#### Thread Management
 
-- Creating threads using `Runnable` interface
-- Why Runnable is preferred (flexibility, lambda support)
-- Thread naming and identification
+- **start() vs run()**: start() creates new thread, run() executes synchronously
+- **sleep(milliseconds)**: Pause thread execution for specified duration
+- **join()**: Main thread waits for worker thread to complete
+- **interrupt()**: Send interrupt signal to thread
+- **isAlive()**: Check if thread is still running
+- **Thread naming**: setName() and getName() for identification
 
-**`ThreadLifeCycle.java`**
+#### Synchronization
 
-- Thread states: NEW → RUNNABLE → RUNNING → BLOCKED → TERMINATED
-- `sleep()` method for pausing execution
-- `join()` method for synchronization
-- `InterruptedException` handling
+Protecting shared resources from concurrent access:
 
-#### `problems/`
+#### Synchronized Blocks
 
-Common concurrency issues and solutions:
-
-**`RaceConditionProblem.java`** ⚠️
-
-- Demonstrates race condition without synchronization
-- Shows inconsistent results (value < 2000)
-- Explains why `count++` is not atomic
-
-**`RaceConditionSolution.java`** ✅
-
-- Fixes race condition with `synchronized` block
-- Consistent results (always 2000)
-- Critical section protection
-
-**`DeadlockDemo.java`** 🔒
-
-- Classic deadlock scenario
-- Circular wait condition
-- 4 deadlock conditions (Coffman conditions)
-- Prevention: Consistent lock ordering
-
-## 🎯 Learning Path
-
-### IO Operations
-
-1. Start with reading → `io/filereader/FileReaderDemo.java`
-2. Practice writing → `io/filewriter/FileWriterDemo.java`
-3. Learn buffering → `BufferedReader`, `BufferedWriter`
-4. Advanced: Object persistence → `io/objectstream/`
-
-### Concurrency
-
-1. **Thread Creation** → `concurrency/basics/MyThread.java` → `MyRunnable.java`
-2. **Thread Lifecycle** → `concurrency/basics/ThreadLifeCycle.java`
-3. **See the Problem** → `concurrency/problems/RaceConditionProblem.java` (run multiple times!)
-4. **Learn the Solution** → `concurrency/problems/RaceConditionSolution.java`
-5. **Understand Deadlock** → `concurrency/problems/DeadlockDemo.java`
-
-## 💡 Key Concepts
-
-### IO Best Practices
-
-```java
-// ✅ Use try-with-resources (automatic closing)
-try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
-    String line = br.readLine();
+```txt
+synchronized(lockObject) {
+    // Critical section - only one thread at a time
 }
-
-// ❌ Manual closing (error-prone)
-BufferedReader br = new BufferedReader(new FileReader("file.txt"));
-String line = br.readLine();
-br.close(); // Might not execute if exception occurs
 ```
 
-### Thread Creation:extends Thread vs implements Runnable
+- Fine-grained control over which code is synchronized
+- Reduces lock contention
+- Better performance than synchronizing entire method
 
-| Aspect             | extends Thread                | implements Runnable         |
-| ------------------ | ----------------------------- | --------------------------- |
-| Flexibility        | ❌ Can't extend other classes | ✅ Can extend other classes |
-| Reusability        | ❌ Thread and task coupled    | ✅ Task reusable            |
-| Lambda support     | ❌ No                         | ✅ Yes                      |
-| **Recommendation** | Rarely used                   | **Preferred**               |
+#### Synchronized Methods
 
-### Synchronization
+- Entire method body protected
+- Lock is on object (instance methods) or class (static methods)
+- Simpler but less granular control
 
-**When to use:**
+#### When to Synchronize
 
 - Multiple threads access shared mutable data
 - At least one thread modifies the data
+- Without synchronization: unpredictable results
 
-**How to use:**
+#### Race Conditions
 
-```java
-// Synchronized block (preferred - fine-grained control)
-synchronized(lockObject) {
-    // Critical section - only one thread at a time
-    sharedData++;
-}
-```
+**Problem**: Multiple threads compete to modify same data
 
-### Race Condition vs Deadlock
+- Example: `count++` not atomic (read, modify, write)
+- Different results each run without synchronization
+- Inconsistent state due to interleaved execution
 
-| Race Condition                       | Deadlock                               |
-| ------------------------------------ | -------------------------------------- |
-| Multiple threads race to modify data | Threads wait for each other forever    |
-| Results in incorrect data            | Results in frozen program              |
-| **Solution**: Synchronization        | **Solution**: Consistent lock ordering |
+**Solution**: Synchronization ensures atomic operations
 
-## 🧪 Experiments
+- Only one thread enters critical section at a time
+- Other threads wait for lock
+- Results always consistent
 
-### Try This: Race Condition
+#### Deadlock
 
-Run `RaceConditionProblem.java` multiple times:
+**Problem**: Threads wait for each other forever, program freezes
 
-```bash
-java module3.concurrency.problems.RaceConditionProblem
-# Run 1: 1403
-# Run 2: 1239
-# Run 3: 1465  ← Different every time!
-```
+- Thread 1 holds Lock A, waits for Lock B
+- Thread 2 holds Lock B, waits for Lock A
+- Circular dependency causes stall
+- Four Coffman conditions enable deadlock:
+  1. Mutual exclusion (can't share resources)
+  2. Hold and wait (hold resource while waiting)
+  3. No preemption (can't force resource release)
+  4. Circular wait (needs hold/wait condition)
 
-Now run `RaceConditionSolution.java`:
+**Prevention**:
 
-```bash
-java module3.concurrency.problems.RaceConditionSolution
-# Always: 2000 ← Consistent!
-```
+- Consistent lock ordering: Always acquire locks in same order
+- Timeout on lock acquisition: Release if timeout
+- Try-lock pattern: Lock.tryLock() instead of lock()
+- Fine-grained locking: Minimize critical sections
 
-### Try This: Deadlock
+#### Thread Communication
 
-Run `DeadlockDemo.java` and watch it freeze (deadlock):
+- **wait(), notify(), notifyAll()**: Coordinate between threads
+- **Condition variables**: More fine-grained control
+- **Volatile keyword**: Ensures visibility of variable changes across threads
 
-- Thread 1 waits for Thread 2
-- Thread 2 waits for Thread 1
-- Both stuck forever!
+#### Common Issues
 
-## ⚠️ Common Pitfalls
+- **Calling run() instead of start()**: Executes synchronously, no new thread
+- **Data races**: Accessing shared data without synchronization
+- **Lost updates**: One thread's changes overwritten by another
+- **Over-synchronization**: Too much locking causes bottlenecks
+- **Not handling InterruptedException**: Thread interruption ignored
 
-1. **Calling `run()` instead of `start()`** - Doesn't create new thread
-2. **Forgetting to close streams** - Resource leaks (use try-with-resources)
-3. **Not handling `InterruptedException`** - Thread interruption ignored
-4. **Excessive synchronization** - Can cause performance bottlenecks
+#### Thread Pools & Executors (Java Concurrency)
 
----
+- **ExecutorService**: Manage thread pool instead of creating threads manually
+- **Advantages**: Reuse threads, limit concurrent threads, queue tasks
+- **Common pool sizes**: Fixed (fixed number), Cached (grows as needed), Scheduled (timed execution)
 
-_Previous: [Module 2 - Advanced Java](/src/module2/README.md)_ | _Main: [Project README](/README.md)_
+## Key Concepts
+
+**IO Best Practice**: Use try-with-resources to ensure streams close even if exception occurs
+
+**Thread vs Runnable**: Always prefer Runnable for better design flexibility
+
+**Atomicity**: `count++` is NOT atomic - three operations (read, increment, write)
+
+**Visibility**: Changes by one thread must be visible to others through synchronization or volatile
+
+**Performance**: Synchronization has overhead - synchronize only critical sections
+
+**Testing concurrency**: Race conditions show differently on different runs, use stress tests
+
+**Order matters**: Lock ordering prevents deadlocks - always acquire in same sequence

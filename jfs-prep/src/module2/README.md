@@ -1,149 +1,193 @@
 # Module 2: Advanced Java & APIs
 
-Master professional Java development with collections, modern Java features, and design principles.
+Professional Java development covering collections framework, functional programming, exception handling, and design principles.
 
-## 📚 Topics Covered
+## Topics Covered
 
-### 1. **Collections Framework** (`collections/`)
+### Collections Framework
 
-Powerful data structures for managing groups of objects.
+Data structures for managing groups of objects:
 
-#### `basics/`
+#### Lists (Ordered, allow duplicates)
 
-Foundation collections for everyday use:
+- **ArrayList**: Dynamic array, fast random access O(1), slower insertions/deletions O(n)
+- **LinkedList**: Doubly linked list, slow random access O(n), fast insertions/deletions O(1) at known position
+- **Vector**: Legacy synchronized Array (rarely used)
+- **Collections interface**: Iterating, searching, sorting
 
-**`list/`** - Ordered collections (duplicates allowed)
+#### Sets (Unique elements only)
 
-- `ArrayList` - Fast random access, dynamic sizing
-- `LinkedList` - Efficient insertions/deletions
-- `Queue` - FIFO operations
-- `Stack` - LIFO operations
-- Iteration techniques
+- **HashSet**: Hash table implementation, no order guaranteed, fast O(1) operations, null allowed
+- **TreeSet**: Red-Black tree implementation, sorted order, O(log n) operations, no null allowed
+- **LinkedHashSet**: Combines HashSet and LinkedList, insertion-order preservation
+- **Set operations**: Union, intersection, difference
 
-**`set/`** - Unique elements only
+#### Maps (Key-Value pairs)
 
-- `HashSet` - Fast lookup, no order
-- `TreeSet` - Sorted order, natural ordering
+- **HashMap**: Hash table implementation, fast O(1) operations, unordered, null keys/values allowed
+- **TreeMap**: Red-Black tree implementation, sorted by key, O(log n) operations
+- **LinkedHashMap**: HashMap with insertion-order preservation, predictable iteration order
+- **Hashtable**: Legacy synchronized map (rarely used)
+- **Map operations**: Get, put, remove, containsKey(), values(), keySet(), entrySet()
 
-**`map/`** - Key-value pairs
+#### Queue & Stack
 
-- `HashMap` - Fast key-based lookup
-- `LinkedHashMap` - Insertion-order preservation
-- Use cases: Caching, dictionaries, frequency counting
+- **Queue (FIFO)**: First-In-First-Out structure, offer/poll/peek operations
+- **Deque**: Double-ended queue, operations from both ends
+- **Stack (LIFO)**: Last-In-First-Out structure, push/pop/peek operations
+- **Priority Queue**: Elements ordered by priority, not insertion order
 
-#### `advanced/`
+#### Collections Utility Methods
 
-Advanced collection operations:
+- **Sorting**: Collections.sort(), custom comparators
+- **Searching**: Collections.binarySearch(), indexOf()
+- **Shuffling**: Collections.shuffle() for randomization
+- **Reversing**: Collections.reverse()
+- **Rotating**: Collections.rotate()
+- **Frequency**: Collections.frequency() for counting
 
-**`algorithms/`** - Collections utility methods
+### Comparator & Comparable
 
-- Sorting, searching, shuffling
-- `Collections.sort()`, `Collections.reverse()`
-- Custom algorithms
+#### Comparable Interface
 
-### 2. **Comparator** (`comparator/`)
+- Single natural ordering defined in class
+- Implements compareTo() method
+- Used by Arrays.sort() and Collections.sort() by default
+- Example: Natural ordering for numbers (ascending), strings (alphabetical)
 
-Custom sorting strategies for objects.
+#### Comparator Interface
 
-#### `basics/`
+- Custom sorting strategies external to class
+- Implements compare() method
+- Multiple comparators possible for same class
+- Comparator chaining: `.thenComparing()` for multi-level sorting
+- Special factory methods: `.reversed()`, `.nullsFirst()`, `.nullsLast()`
 
-- Custom functional interface example
-- Comparator fundamentals
-- Return value conventions (negative/zero/positive)
+#### Comparison
 
-#### `advanced/`
+- Return negative: first < second
+- Return zero: first == second
+- Return positive: first > second
 
-- Multiple sorting strategies
-- Comparator chaining (`.thenComparing`)
-- Reversed order (`.reversed()`)
-- Null-safe comparisons (`nullsFirst`, `nullsLast`)
+### Exception Handling
 
-### 3. **Exceptions** (`exceptions/`)
+Managing errors gracefully:
 
-Error handling mechanisms:
+#### Try-Catch-Finally
 
-- Try-catch blocks
-- Multiple catch blocks
-- Finally block
-- Custom exceptions
-- Exception hierarchy
-- Best practices
+- **try block**: Code that might throw exception
+- **catch block**: Handle specific exception types, multiple catches allowed
+- **finally block**: Always executes, for cleanup operations
+- **Try-with-resources**: Automatic resource closing (Java 7+)
 
-### 4. **Java 8+ Features** (`java8/`)
+#### Exception Hierarchy
 
-Modern Java programming patterns.
+- **Throwable**: Root class
+- **Exception**: For exceptional conditions (recoverable)
+- **RuntimeException**: Unchecked exceptions (programming errors)
+- **Checked Exceptions**: Must be caught or declared (IOException, SQLException)
+- **Error**: Serious problems (OutOfMemoryError, StackOverflowError)
 
-#### `lambda/`
+#### Custom Exceptions
 
-- Lambda expressions syntax
-- Functional interfaces
-- Method references
+- Extend Exception or RuntimeException
+- Provide meaningful messages
+- Use for domain-specific error handling
 
-#### `streams/`
+#### Best Practices
 
-- Stream API basics
-- Intermediate operations (`.map`, `.filter`)
-- Terminal operations (`.collect`, `.forEach`)
-- Parallel streams
-- Stream pipeline patterns
+- Catch specific exceptions, not generic Exception
+- Log exceptions with context
+- Clean up resources in finally or try-with-resources
+- Don't swallow exceptions silently
 
-#### `optional/`
+### Java 8+ Features
 
-- Null-safety with `Optional`
-- `.isPresent()`, `.orElse()`, `.orElseThrow()`
-- Avoiding `NullPointerException`
+Modern programming paradigms:
 
-### 5. **SOLID Principles** (`solid/`)
+#### Lambda Expressions
+
+- Anonymous functions with concise syntax
+- Syntax: `(parameters) -> body`
+- Works with functional interfaces (single abstract method)
+- Type inference for parameters
+- Used with Comparators, Listeners, Callbacks
+
+#### Functional Interfaces
+
+- Single abstract method interfaces
+- `@FunctionalInterface` annotation for clarity
+- Examples: Runnable, Callable, Consumer, Supplier, Function, Predicate
+- Built-in interfaces in java.util.function package
+
+#### Method References
+
+- Shorthand for lambda expressions
+- Types: Static method, Instance method, Constructor
+- Syntax: `ClassName::methodName` or `instance::methodName`
+- More readable alternative to lambdas
+
+#### Stream API
+
+- Functional approach to processing collections
+- Lazy evaluation for performance
+- Pipeline: Source → Intermediate Operations → Terminal Operation
+- **Intermediate operations**: filter(), map(), flatMap(), distinct(), sorted(), limit(), skip()
+- **Terminal operations**: forEach(), collect(), reduce(), count(), findFirst(), anyMatch(), allMatch()
+- Immutability: Original collection unchanged
+- Parallel streams: parallelStream() for multi-threaded processing
+
+#### Optional Class
+
+- Wrapper for nullable values
+- Prevents NullPointerException
+- Methods: isPresent(), isEmpty(), get(), orElse(), orElseThrow(), orElseGet()
+- map(), flatMap(), filter() for chaining operations
+- IfPresent(), ifPresentOrElse() for conditional execution
+
+### SOLID Principles
 
 Software design principles for maintainable code:
 
-- **S**ingle Responsibility Principle (SRP)
-- **O**pen/Closed Principle (OCP)
-- **L**iskov Substitution Principle (LSP)
-- **I**nterface Segregation Principle (ISP)
-- **D**ependency Inversion Principle (DIP)
+#### Single Responsibility Principle (SRP)
 
-## 🎯 Learning Path
+- Class should have single reason to change
+- One responsibility = one reason to change
+- Improves testability and code organization
 
-### Beginner Path
+#### Open/Closed Principle (OCP)
 
-1. **Collections Basics** → `collections/basics/list/` → `collections/basics/set/` → `collections/basics/map/`
-2. **Sorting** → `comparator/basics/` → `comparator/advanced/`
-3. **Error Handling** → `exceptions/`
+- Open for extension, closed for modification
+- Use inheritance and polymorphism instead of modifying existing code
+- Reduces bugs from changes
 
-### Intermediate Path
+#### Liskov Substitution Principle (LSP)
 
-4. **Modern Java** → `java8/lambda/` → `java8/streams/` → `java8/optional/`
-5. **Advanced Collections** → `collections/advanced/algorithms/`
+- Subtypes must be substitutable for base types
+- Child class shouldn't break parent contract
+- If you use parent type, can safely use child type
 
-### Advanced Path
+#### Interface Segregation Principle (ISP)
 
-6. **Design Principles** → `solid/`
+- Many client-specific interfaces better than one general interface
+- Clients shouldn't depend on methods they don't use
+- Smaller, focused interfaces are better
 
-## 💡 Key Concepts
+#### Dependency Inversion Principle (DIP)
 
-### When to Use Which Collection?
+- Depend on abstractions, not concrete implementations
+- High-level modules shouldn't depend on low-level modules
+- Both should depend on abstractions (interfaces/abstract classes)
+- Enables flexibility and testability through dependency injection
 
-| Need                          | Use             |
-| ----------------------------- | --------------- |
-| Fast random access            | `ArrayList`     |
-| Frequent insertions/deletions | `LinkedList`    |
-| Unique elements               | `HashSet`       |
-| Sorted unique elements        | `TreeSet`       |
-| Key-value mapping             | `HashMap`       |
-| Order-preserving map          | `LinkedHashMap` |
+## Key Concepts
 
-### Comparator vs Comparable
+**Collection Complexity**: Understanding O(1), O(n), O(log n) for choosing appropriate structure
 
-- **Comparable**: One natural ordering (inside the class)
-- **Comparator**: Multiple custom orderings (external to class)
+**Stream vs Loop**: Streams for functional style, understand when each is appropriate
 
-## 📝 Practice
+**Exception handling strategy**: Layer-specific handling, meaningful error messages, proper logging
 
-- Look for `questions/` subfolders (files prefixed with `QS`)
-- Try solving problems before viewing solutions
-- Practice streams with real-world datasets
+**Functional programming**: Immutability, pure functions, composition over inheritance
 
----
-
-_Previous: [Module 1 - Core Java](/src/module1/README.md)_ | _Next: [Module 3 - IO & Concurrency](/src/module3/README.md)_
+**Design patterns**: SOLID principles lead to common patterns (Factory, Strategy, Dependency Injection)

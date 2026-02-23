@@ -1,12 +1,8 @@
-# Social Media Backend API - Minor Project 2
+# Social Media Backend API
 
-A Spring Boot REST API for a social media platform with features like posts, comments, and likes.
+Minor Project 2 - Comprehensive Spring Boot REST API for social media platform featuring user management, posts, comments, and likes with PostgreSQL database relationships.
 
-## Project Overview
-
-This is **Minor Project 2** - a comprehensive backend system for a social media application built with Spring Boot, Jakarta Persistence, and PostgreSQL. The project demonstrates core concepts of REST API development, database relationships, validation, and error handling.
-
-## Entity Relationship Diagram
+## Entity Relationships
 
 ```mermaid
 erDiagram
@@ -159,38 +155,9 @@ DELETE /api/likes/{id}                     - Unlike post
 - **Lombok**: Reduces boilerplate code
 - **Maven**: Build tool
 
-## Getting Started
+## Testing & Documentation
 
-### Prerequisites
-
-- Java 17 or higher
-- PostgreSQL database
-- Maven 3.6+
-
-### Setup
-
-1. **Clone the repository**
-
-2. **Configure database** (`src/main/resources/application.properties`)
-
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/social_media_db
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   spring.jpa.hibernate.ddl-auto=update
-   ```
-
-3. **Build and run**
-
-4. **Server runs on** `http://localhost:8080`
-
-## Testing with Postman
-
-You can test the API using the Postman collection
-
-**[Social Media API Postman Collection](https://dark-eclipse-727260.postman.co/workspace/lpu~46ad23b4-3ff7-45e2-880d-6146382f44a4/collection/32782602-f2a835c6-ba70-4d83-bfd8-9fa2020822f5?action=share&creator=32782602)**
-
- Import `Social_Media_API_Postman_Collection.json` into Postman
+The project includes a Postman collection (`Social_Media_API_Postman_Collection.json`) for API testing.
 
 ## Topics Covered
 
@@ -363,33 +330,3 @@ You can test the API using the Postman collection
 5. **Lombok Usage**: Reduces boilerplate code
 6. **Global Exception Handling**: Consistent error responses
 7. **Lazy Loading**: Optimizes database queries
-
-## Troubleshooting
-
-### Database Connection Issues
-
-- Verify PostgreSQL is running
-- Check credentials in application.properties
-- Ensure database exists
-
-### Validation Errors
-
-- Check request body format matches model
-- Ensure all @NotBlank/@NotNull fields are provided
-- Review error response for specific field errors
-
-### Port Already in Use
-
-- Change server port in application.properties: `server.port=8081`
-
-## License
-
-This project is for educational purposes as part of Minor Project 2.
-
-## Support
-
-For questions or issues, refer to the code comments and documentation in the respective model and controller classes.
-
----
-
-**Happy Learning!** 🚀

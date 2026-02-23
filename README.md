@@ -1,46 +1,45 @@
-# JFS Prep Repository
+# JFS Prep - Java Full Stack Preparation
 
-This repository contains exercises and examples for the Java Full Stack (JFS) preparation course.
+Comprehensive Java learning and practice repository with core fundamentals, advanced concepts, and practical projects.
 
-## Folder Structure
+## Project Folder Structure
 
-- **`rest-api-demo`**: A Spring Boot application demonstrating REST API concepts, Dependency Injection (`@Component`, `@Primary`), and standard layered architecture (Controller, Service, Repository). It uses an in-memory `HashMap` to simulate a database.
-- **`memory-db`**: A pure Java application implementing a custom In-Memory Database with support for TTL (Time-To-Live).
-- **`jdbcDemo`**: Examples of JDBC connectivity (if applicable).
-- **`jfs-prep`**: General preparation materials.
-
-## Getting Started
-
-### Prerequisites
-
-- Java 17 or higher installed.
-- Maven (optional, wrapper provided in projects).
-
-### Implementation Details
-
-The `rest-api-demo` project features a specific example of Spring's Dependency Injection:
-
-- `ServiceInter`: A common interface.
-- `StudentService`: The primary implementation (`@Primary`).
-- `UserService`: An alternative implementation.
-- `StudentController`: Demonstrates the injection of the primary bean.
-
-### How to Run `rest-api-demo`
-
-1. Navigate to the folder:
-   ```bash
-   cd rest-api-demo
-   ```
-2. Run the application:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-3. Test the `@Primary` annotation example:
-   ```bash
-   curl http://localhost:8080/api/service
-   ```
-   Output: `Student Service Implementation (Primary)`
-
-## Resources
-
-Check the `README.md` inside each project folder for specific details and usage instructions.
+```txt
+JFS-Prep/
+├── jfs-prep/                          # Core Java learning modules
+│   └── src/
+│       ├── module1/                   # Core Java Foundations
+│       │   ├── primitives/
+│       │   ├── operators/
+│       │   ├── conditionals/
+│       │   ├── loops/
+│       │   ├── arrays/
+│       │   ├── strings/
+│       │   ├── methods/
+│       │   ├── generics/
+│       │   └── oop/
+│       ├── module2/                   # Advanced Java & APIs
+│       │   ├── collections/
+│       │   ├── comparator/
+│       │   ├── exceptions/
+│       │   ├── java8/
+│       │   └── solid/
+│       ├── module3/                   # IO & Concurrency
+│       │   ├── io/
+│       │   └── concurrency/
+│       └── project/                   # Logger utility system
+│           ├── utils/
+│           └── demo/
+├── rest-api-demo/                     # Spring Boot REST API
+│   └── src/
+│       └── main/java/
+├── memory-db/                         # In-Memory Database implementation
+│   └── src/
+├── social-media-be/                   # Social Media Backend API (Minor Project 2)
+│   └── src/
+│       └── main/java/
+├── jdbcDemo/                          # JDBC Connectivity examples
+│   └── src/
+│       └── main/java/
+└── data/                              # Shared data and resources
+```

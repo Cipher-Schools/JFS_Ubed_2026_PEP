@@ -1,39 +1,33 @@
-# In-Memory Database Logic
+# In-Memory Database
 
-This project demonstrates the core concepts behind an In-Memory Database, often used for caching (like Redis) or fast temporary storage.
+Custom in-memory key-value database implementation featuring TTL (Time-To-Live) expiration, demonstrating caching patterns and data structure management.
 
-## Concepts Covered
+## Core Concepts
 
-### 1. Key-Value Storage
+### Key-Value Storage
 
-- Data is stored as Key-Value pairs, similar to a `HashMap`.
-- Efficient constant time `O(1)` access for GET, PUT, and DELETE operations.
+- Key-value pair storage using HashMap
+- Constant time O(1) access for GET, PUT, DELETE operations
+- Efficient data retrieval from memory
 
-### 2. Time-To-Live (TTL)
+### Time-To-Live (TTL)
 
-- Entries can have an expiration time (TTL).
-- A concept crucial for caching systems to invalidate stale data automatically.
+- Entries can have expiration times
+- Automatic stale data invalidation
+- Critical concept for caching systems (Redis-like behavior)
+- Timestamp-based expiration tracking
 
-### 3. Command Pattern (implied)
+### Command Pattern
 
-- The application parses text commands to perform operations:
-  - `PUT key value [ttl]`
-  - `GET key`
-  - `DELETE key`
+- Text command parsing and execution
+- Operations:
+  - `PUT key value [ttl]`: Store data with optional expiration
+  - `GET key`: Retrieve data (checks TTL)
+  - `DELETE key`: Remove data
 
-## Usage
+## Implementation Details
 
-Run the `Main` class and enter commands:
-
-```
-> PUT user1 John 60
-> GET user1
-John
-> DELETE user1
-```
-
-## Structure
-
-- `Main.java`: Entry point and command loop.
-- `DB.java`: The database implementation managing storage and TTL.
-- `CommandParser.java`: Parses user input into executable commands.
+- **Main.java**: Application entry point and command loop
+- **DB.java**: In-memory storage engine with TTL management
+- **CommandParser.java**: User input parsing and command execution
+- **Entry.java**: Data structure for storing values with metadata

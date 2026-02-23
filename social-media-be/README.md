@@ -186,13 +186,11 @@ DELETE /api/likes/{id}                     - Unlike post
 
 ## Testing with Postman
 
-1. Import `Social_Media_API_Postman_Collection.json` into Postman
-2. Organize APIs are grouped by functionality:
-   - User Management
-   - Post Management
-   - Comment Management
-   - Like Management
-3. Test each endpoint with the provided request bodies
+You can test the API using the Postman collection
+
+**[Social Media API Postman Collection](https://dark-eclipse-727260.postman.co/workspace/lpu~46ad23b4-3ff7-45e2-880d-6146382f44a4/collection/32782602-f2a835c6-ba70-4d83-bfd8-9fa2020822f5?action=share&creator=32782602)**
+
+ Import `Social_Media_API_Postman_Collection.json` into Postman
 
 ## Topics Covered
 

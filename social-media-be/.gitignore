@@ -1,0 +1,49 @@
+# Git Ignore File - Exclude sensitive files from version control
+
+# Credentials and sensitive files
+*.properties.local
+application-local.properties
+.env
+.env.local
+.env.*.local
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Build files
+target/
+/target
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Maven
+.m2/
+mvncompletion.sh
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.swo
+*~
+
+# Node (if adding frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env.production
+.env.development
+secrets/
+
+# OS files
+.DS_Store
+Thumbs.db

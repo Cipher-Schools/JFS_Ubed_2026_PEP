@@ -157,7 +157,7 @@ DELETE /api/likes/{id}                     - Unlike post
 
 ## Testing & Documentation
 
-The project includes a Postman collection (`Social_Media_API_Postman_Collection.json`) for API testing.
+The project includes a Postman collection (`Social_Media_API_Postman_Collection.json`) for API testing. You can also view and test the API using this [Postman Workspace / Documentation](https://dark-eclipse-727260.postman.co/workspace/lpu~46ad23b4-3ff7-45e2-880d-6146382f44a4/request/32782602-6d2154ea-8d7d-440f-84f7-873ebc0c56bb?action=share&creator=32782602&ctx=documentation).
 
 ## Topics Covered
 

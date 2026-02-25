@@ -1,6 +1,7 @@
 package org.example.socialmediabe.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.example.socialmediabe.dto.AuthResponse;
 import org.example.socialmediabe.dto.LoginRequest;
@@ -23,10 +24,10 @@ public class AuthService {
 
         //Dto -> Entity
         if (userRepo.findByEmail(req.getEmail()) != null) {
-            throw new RuntimeException("Email already exists");
+            throw new ValidationException("Email already exists");
         }
         if (userRepo.findByUsername(req.getUsername()) != null) {
-            throw new RuntimeException("Username already exists");
+            throw new ValidationException("Username already exists");
         }
 
         User newUser = new User();
@@ -50,12 +51,12 @@ public class AuthService {
     public AuthResponse login(LoginRequest req) {
         User user = userRepo.findByEmail(req.getEmail());
         if (user == null) {
-            throw new RuntimeException("Invalid email or password");
+            throw new ValidationException("Invalid email or password");
         }
 
         BCrypt.Result result = BCrypt.verifyer().verify(req.getPassword().toCharArray(), user.getPassword());
         if (!result.verified) {
-            throw new RuntimeException("Invalid email or password");
+            throw new ValidationException("Invalid email or password");
         }
 
         String token = jwtUtil.generateToken(user.getEmail());

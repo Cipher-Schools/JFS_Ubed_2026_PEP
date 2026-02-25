@@ -49,3 +49,4 @@ target/
 
 # Local configuration
 local.properties
+.env

@@ -2,6 +2,7 @@ package org.example.socialmediabe.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.socialmediabe.dto.UserResponse;
 import org.example.socialmediabe.model.User;
 import org.example.socialmediabe.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,15 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email){ // @PathVariable extracts email from URL path
-        User fetchedUser = userService.getUserByEmail(email);
+    //username
+    @GetMapping("/{username}")
+    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable String username){ // @PathVariable extracts username from URL path
+        User fetchedUser = userService.getUserByUsername(username);
         if(fetchedUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
-    };
+        return ResponseEntity.ok(new UserResponse(fetchedUser));
+    }
 
     //now we will use AuthController - register route
 //    @PostMapping

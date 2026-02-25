@@ -28,21 +28,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
     };
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){ // @Valid triggers validation; @RequestBody converts JSON to User object
-        User createdUser = userService.createUser(user);
-        if(createdUser == null) return ResponseEntity.status( HttpStatus.BAD_REQUEST).build();
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED); // ResponseEntity wraps response with HTTP status code
-    };
+    //now we will use AuthController - register route
+//    @PostMapping
+//    public ResponseEntity<User> createUser(@Valid @RequestBody User user){ // @Valid triggers validation; @RequestBody converts JSON to User object
+//        User createdUser = userService.createUser(user);
+//        if(createdUser == null) return ResponseEntity.status( HttpStatus.BAD_REQUEST).build();
+////        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+//        return new ResponseEntity<>(createdUser, HttpStatus.CREATED); // ResponseEntity wraps response with HTTP status code
+//    };
 }
 
 //API Response
 
-// this this api with post
+// this api with post
 /*
-{ email: "youremail",
+{ email: "yourEmail",
 fullName: "yourFullName,
-password: your passwored,
+password: your password,
 username: yourUsername
 * */

@@ -19,6 +19,7 @@ public class AuthControl {
 
     private final AuthService authService;
 
+    //use this route to create user
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest req){
         return ResponseEntity.ok(authService.register(req));

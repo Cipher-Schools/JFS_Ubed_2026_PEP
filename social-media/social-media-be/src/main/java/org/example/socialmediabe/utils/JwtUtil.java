@@ -13,12 +13,16 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    // @Value tells Spring to grab the value from application.properties
+    // This allows us to keep our secret key hidden out of the source code
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
+    // The #{...} tells Spring to evaluate the math equation in application.properties
+    // Example: 1000 * 60 * 60 * 24 instead of treating it as plain text
+    @Value("#{${jwt.expiration}}")
     private long expiration;
-
+    
     private Key getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }

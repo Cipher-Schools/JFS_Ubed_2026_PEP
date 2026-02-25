@@ -59,3 +59,11 @@ We use the `io.jsonwebtoken` (JJWT) library to handle user sessions statelessly.
               .getSubject();
   }
   ```
+
+---
+
+## API Documentation
+
+You can explore and test the API endpoints using the provided Postman collection:
+
+[Postman Collection Workspace](https://dark-eclipse-727260.postman.co/workspace/lpu~46ad23b4-3ff7-45e2-880d-6146382f44a4/collection/32782602-d0ce07c0-1503-436a-9fc7-6cdcb730bcbd?action=share&source=copy-link&creator=32782602)

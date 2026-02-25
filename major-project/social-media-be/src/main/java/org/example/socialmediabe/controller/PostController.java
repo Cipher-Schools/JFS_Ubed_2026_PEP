@@ -2,6 +2,7 @@ package org.example.socialmediabe.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.socialmediabe.dto.CreatePostRequest;
 import org.example.socialmediabe.model.Post;
 import org.example.socialmediabe.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class PostController {
 
     //createPost
     @PostMapping
-    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
-        Post createdPost = postService.createPost(post);
+    public ResponseEntity<Post> createPost(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody CreatePostRequest post) {
+        Post createdPost = postService.createPost(authHeader, post);
         // 201 Created - standard response when a new resource is successfully created
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }

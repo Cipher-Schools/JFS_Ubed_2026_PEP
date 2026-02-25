@@ -2,9 +2,12 @@ package org.example.socialmediabe.service;
 
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.example.socialmediabe.dto.CreatePostRequest;
 import org.example.socialmediabe.model.Post;
+import org.example.socialmediabe.model.User;
 import org.example.socialmediabe.repository.PostRepo;
 import org.example.socialmediabe.repository.UserRepo;
+import org.example.socialmediabe.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +18,29 @@ import java.util.List;
 public class PostService {
     private final PostRepo postRepo;
     private final UserRepo userRepo;
+    private final JwtUtil jwtUtil;
 
-    public Post createPost(Post post) {
+    public Post createPost(String authHeader, CreatePostRequest request) {
         //if user exists
-        if(post.getUser() == null || post.getUser().getId() == null) {
-            throw new ValidationException("User cannot be null");
+        if(authHeader == null || !authHeader.startsWith("Bearer")) {
+            throw new ValidationException("Token is invalid");
         }
-        if(userRepo.findById(post.getUser().getId()).isEmpty()) {
-            throw new ValidationException("User does not exist");
+
+        //remove bearer word from token
+        String token = authHeader.substring(7);
+        String email = jwtUtil.verifyToken(token);
+
+        //update use email to create post
+        User currentUser = userRepo.findByEmail(email);
+
+        if(currentUser == null) {
+            throw new ValidationException("User doesn't exists");
         }
+
+        Post post = new Post();
+        post.setCaption(request.getCaption());
+        post.setImageUrl(request.getImageUrl());
+        post.setUser(currentUser);
         return postRepo.save(post);
     }
 

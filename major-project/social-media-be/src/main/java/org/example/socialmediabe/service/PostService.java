@@ -57,7 +57,19 @@ public class PostService {
         return postRepo.findById(id).orElse(null);
     }
 
-    public void deletePostById(long id) {
+    public void deletePostById(String authHeader, long id) {
+        //validate token first
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ValidationException("Token is invalid");
+        }
+        
+        String token = authHeader.substring(7);
+        String email = jwtUtil.verifyToken(token);
+        User currentUser = userRepo.findByEmail(email);
+        if (currentUser == null) {
+            throw new ValidationException("User doesn't exist");
+        }
+
         //if post exists
         if(postRepo.findById(id).isEmpty()) {
             throw new ValidationException("Post does not exist");

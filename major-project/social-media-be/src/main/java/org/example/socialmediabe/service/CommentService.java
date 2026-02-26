@@ -4,9 +4,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.example.socialmediabe.model.Comment;
+import org.example.socialmediabe.model.User;
 import org.example.socialmediabe.repository.CommentRepo;
 import org.example.socialmediabe.repository.PostRepo;
 import org.example.socialmediabe.repository.UserRepo;
+import org.example.socialmediabe.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,21 +19,19 @@ public class CommentService {
     private final CommentRepo commentRepo;
     private final PostRepo postRepo;
     private final UserRepo userRepo;
+    private final JwtUtil jwtUtil;
 
-    public Comment addComment(Comment comment) {
+    public Comment addComment(String authHeader, Comment comment) {
+        User currentUser = extractUser(authHeader);
         //if (post exists, user exists)
-        if(comment.getPost() == null || comment.getPost().getId() == null) {
+        if (comment.getPost() == null || comment.getPost().getId() == null) {
             throw new ValidationException("Post cannot be null");
         }
-        if(postRepo.findById((long) comment.getPost().getId()).isEmpty()) {
+        if (postRepo.findById((long) comment.getPost().getId()).isEmpty()) {
             throw new ValidationException("Post does not exist");
         }
-        if(comment.getUser() == null || comment.getUser().getId() == null) {
-            throw new ValidationException("User cannot be null");
-        }
-        if(userRepo.findById(comment.getUser().getId()).isEmpty()) {
-            throw new ValidationException("User does not exist");
-        }
+
+        comment.setUser(currentUser);
         return commentRepo.save(comment);
     }
 
@@ -39,11 +39,31 @@ public class CommentService {
         return commentRepo.findByPostId(postId);
     }
 
-    public void deleteComment(Long id) {
+    public void deleteComment(String authHeader, Long id) {
+        User currentUser = extractUser(authHeader);
+
         //if(comment exists)
-        if(commentRepo.findById(id).isEmpty()) {
-            throw new ValidationException("Comment does not exist");
+        Comment comment = commentRepo.findById(id)
+                .orElseThrow(() -> new ValidationException("Comment does not exist"));
+
+        //if(comment belongs to current user)
+        if (!comment.getUser().getId().equals(currentUser.getId())) {
+            throw new ValidationException("You are not authorized to delete this comment");
         }
+
         commentRepo.deleteById(id);
+    }
+
+    private User extractUser(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ValidationException("Token is invalid");
+        }
+        String token = authHeader.substring(7);
+        String email = jwtUtil.verifyToken(token);
+        User user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new ValidationException("User doesn't exist");
+        }
+        return user;
     }
 }

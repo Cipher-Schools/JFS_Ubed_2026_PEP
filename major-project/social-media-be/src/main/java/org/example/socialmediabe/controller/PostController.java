@@ -53,8 +53,8 @@ public class PostController {
 
     //deletePost
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        postService.deletePostById(id);
+    public ResponseEntity<Void> deletePost(@RequestHeader("Authorization") String authHeader, @PathVariable Long id) {
+        postService.deletePostById(authHeader, id);
         // 204 No Content - delete was successful but there's nothing to return
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

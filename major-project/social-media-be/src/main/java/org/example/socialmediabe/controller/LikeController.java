@@ -1,6 +1,5 @@
 package org.example.socialmediabe.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.socialmediabe.model.Like;
 import org.example.socialmediabe.service.LikeService;
@@ -15,15 +14,15 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping
-    public ResponseEntity<Void> likePost(@Valid @RequestBody Like like) {
-        likeService.likePost(like);
+    public ResponseEntity<Void> likePost(@RequestHeader("Authorization") String authHeader, @RequestBody Like like) {
+        likeService.likePost(authHeader, like);
         // 201 Created - like was registered successfully
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> dislikePost(@PathVariable Long id) {
-        likeService.dislikePost(id);
+    public ResponseEntity<Void> dislikePost(@RequestHeader("Authorization") String authHeader, @PathVariable Long id) {
+        likeService.dislikePost(authHeader, id);
         // 204 No Content - unlike was successful but there's nothing to return
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

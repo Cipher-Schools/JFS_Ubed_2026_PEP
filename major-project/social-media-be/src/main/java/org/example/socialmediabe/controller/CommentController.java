@@ -17,8 +17,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<Comment> addComment(@Valid @RequestBody Comment comment) {
-        Comment savedComment = commentService.addComment(comment);
+    public ResponseEntity<Comment> addComment(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody Comment comment) {
+        Comment savedComment = commentService.addComment(authHeader, comment);
         // 201 Created - new comment was successfully added
         return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
     }
@@ -30,8 +30,8 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
+    public ResponseEntity<Void> deleteComment(@RequestHeader("Authorization") String authHeader, @PathVariable Long id) {
+        commentService.deleteComment(authHeader, id);
         // 204 No Content - delete was successful but there's nothing to return
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

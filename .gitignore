@@ -50,3 +50,6 @@ target/
 # Local configuration
 local.properties
 .env
+
+./client
+major-project/client

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LikeRepo extends JpaRepository<Like, Long> {
 
+    // Used to check if a user already liked a post before inserting a duplicate
+    boolean existsByUserIdAndPostId(Long userId, Long postId);
 }

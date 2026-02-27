@@ -1,8 +1,13 @@
 package org.example.socialmediabe.service;
 
-import jakarta.validation.ValidationException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.socialmediabe.dto.LikeRequest;
+import org.example.socialmediabe.exception.ForbiddenException;
+import org.example.socialmediabe.exception.ResourceNotFoundException;
+import org.example.socialmediabe.exception.UnauthorizedException;
 import org.example.socialmediabe.model.Like;
+import org.example.socialmediabe.model.Post;
 import org.example.socialmediabe.model.User;
 import org.example.socialmediabe.repository.LikeRepo;
 import org.example.socialmediabe.repository.PostRepo;
@@ -19,46 +24,36 @@ public class LikeService {
     private final UserRepo userRepo;
     private final JwtUtil jwtUtil;
 
-    public void likePost(String authHeader, Like like) {
-        User currentUser = extractUser(authHeader);
+    @Transactional
+    public void likePost(String authHeader, LikeRequest request) {
+        User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before liking a post");
 
-        if (like.getPost() == null || like.getPost().getId() == null) {
-            throw new ValidationException("Post cannot be null");
-        }
-        if (postRepo.findById((long) like.getPost().getId()).isEmpty()) {
-            throw new ValidationException("Post does not exist");
+        Post post = postRepo.findById(request.getPostId())
+                .orElseThrow(() -> new ResourceNotFoundException("Post with id " + request.getPostId() + " does not exist"));
+
+        if (likeRepo.existsByUserIdAndPostId(currentUser.getId(), post.getId())) {
+            throw new IllegalArgumentException("You have already liked this post");
         }
 
+        Like like = new Like();
         like.setUser(currentUser);
+        like.setPost(post);
         likeRepo.save(like);
     }
 
+    @Transactional
     public void dislikePost(String authHeader, Long id) {
-        User currentUser = extractUser(authHeader);
+        User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before removing a like");
 
         //if(like exists)
         Like like = likeRepo.findById(id)
-                .orElseThrow(() -> new ValidationException("Like does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Like with id " + id + " does not exist"));
 
         //if(like belongs to current user)
         if (!like.getUser().getId().equals(currentUser.getId())) {
-            throw new ValidationException("You are not authorized to remove this like");
+            throw new ForbiddenException("You are not authorized to remove this like");
         }
 
         likeRepo.deleteById(id);
-    }
-
-    private User extractUser(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new ValidationException("Token is invalid");
-        }
-        
-        String token = authHeader.substring(7);
-        String email = jwtUtil.verifyToken(token);
-        User user = userRepo.findByEmail(email);
-        if (user == null) {
-            throw new ValidationException("User doesn't exist");
-        }
-        return user;
     }
 }

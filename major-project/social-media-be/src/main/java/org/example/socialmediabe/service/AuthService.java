@@ -1,11 +1,12 @@
 package org.example.socialmediabe.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import jakarta.validation.ValidationException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.socialmediabe.dto.AuthResponse;
 import org.example.socialmediabe.dto.LoginRequest;
 import org.example.socialmediabe.dto.RegisterRequest;
+import org.example.socialmediabe.exception.UnauthorizedException;
 import org.example.socialmediabe.model.User;
 import org.example.socialmediabe.repository.UserRepo;
 import org.example.socialmediabe.utils.JwtUtil;
@@ -18,16 +19,17 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserRepo userRepo;
 
+    @Transactional
     public AuthResponse register(RegisterRequest req) {
 //        if -> to check wether user exists or not
         //if -> username exists or not
 
         //Dto -> Entity
         if (userRepo.findByEmail(req.getEmail()) != null) {
-            throw new ValidationException("Email already exists");
+            throw new IllegalArgumentException("Email is already in use");
         }
         if (userRepo.findByUsername(req.getUsername()) != null) {
-            throw new ValidationException("Username already exists");
+            throw new IllegalArgumentException("Username is already taken");
         }
 
         User newUser = new User();
@@ -50,13 +52,16 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest req) {
         User user = userRepo.findByEmail(req.getEmail());
+
+        // Use 401 Unauthorized for wrong credentials — not 400 Bad Request
+        // Note: same message for wrong email or wrong password — avoids user enumeration attacks
         if (user == null) {
-            throw new ValidationException("Invalid email or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         BCrypt.Result result = BCrypt.verifyer().verify(req.getPassword().toCharArray(), user.getPassword());
         if (!result.verified) {
-            throw new ValidationException("Invalid email or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         String token = jwtUtil.generateToken(user.getEmail());

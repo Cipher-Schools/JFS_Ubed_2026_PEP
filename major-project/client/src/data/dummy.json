@@ -1,0 +1,79 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "author": {
+        "id": 101,
+        "username": "alex_dev"
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80",
+      "caption": "Explore the beauty of nature 🌄 Every mountain peak is within reach if you just keep climbing.",
+      "likesCount": 142,
+      "commentsCount": 8,
+      "createdAt": "2025-02-20T10:30:00Z",
+      "liked": true,
+      "comments": [
+        {
+          "id": 201,
+          "author": { "id": 102, "username": "priya_k" },
+          "content": "Absolutely stunning! 😍",
+          "createdAt": "2025-02-20T11:00:00Z"
+        },
+        {
+          "id": 202,
+          "author": { "id": 103, "username": "john_doe" },
+          "content": "Where is this place?",
+          "createdAt": "2025-02-20T11:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "author": {
+        "id": 102,
+        "username": "priya_k"
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80",
+      "caption": "Coffee and code ☕💻 My perfect morning routine. Building something amazing today!",
+      "likesCount": 87,
+      "commentsCount": 5,
+      "createdAt": "2025-02-21T08:15:00Z",
+      "liked": false,
+      "comments": [
+        {
+          "id": 203,
+          "author": { "id": 101, "username": "alex_dev" },
+          "content": "Same energy every morning 🔥",
+          "createdAt": "2025-02-21T08:45:00Z"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "author": {
+        "id": 103,
+        "username": "john_doe"
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=600&q=80",
+      "caption": "Stargazing last night 🌌 The universe is a reminder of how small and grand we are at the same time.",
+      "likesCount": 230,
+      "commentsCount": 14,
+      "createdAt": "2025-02-22T22:00:00Z",
+      "liked": false,
+      "comments": [
+        {
+          "id": 204,
+          "author": { "id": 102, "username": "priya_k" },
+          "content": "This is magical ✨",
+          "createdAt": "2025-02-22T22:30:00Z"
+        },
+        {
+          "id": 205,
+          "author": { "id": 101, "username": "alex_dev" },
+          "content": "I need to try this someday!",
+          "createdAt": "2025-02-22T23:00:00Z"
+        }
+      ]
+    }
+  ]
+}

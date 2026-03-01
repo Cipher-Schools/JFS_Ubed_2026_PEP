@@ -26,11 +26,14 @@ public class LikeService {
 
     @Transactional
     public void likePost(String authHeader, LikeRequest request) {
+        // Retrieve the authenticated user from the provided JWT token
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before liking a post");
 
+        // Check if the post exists in the database
         Post post = postRepo.findById(request.getPostId())
                 .orElseThrow(() -> new ResourceNotFoundException("Post with id " + request.getPostId() + " does not exist"));
 
+        // Prevent a user from liking the same post multiple times
         if (likeRepo.existsByUserIdAndPostId(currentUser.getId(), post.getId())) {
             throw new IllegalArgumentException("You have already liked this post");
         }
@@ -43,9 +46,10 @@ public class LikeService {
 
     @Transactional
     public void dislikePost(String authHeader, Long id) {
+        // Authenticate the user trying to remove the like
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before removing a like");
 
-        //if(like exists)
+        // Fetch the like record from the database to ensure it exists
         Like like = likeRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Like with id " + id + " does not exist"));
 

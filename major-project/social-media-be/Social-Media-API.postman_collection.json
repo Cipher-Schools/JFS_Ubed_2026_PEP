@@ -1,0 +1,429 @@
+{
+  "info": {
+    "name": "Social Media API",
+    "_postman_id": "social-media-api-v1",
+    "description": "Complete API collection for the Social Media Backend. \n\n## Authentication\nProtected endpoints require a `Bearer` token in the `Authorization` header.\n1. Use `POST /api/auth/register` to create an account\n2. Use `POST /api/auth/login` to get your JWT token\n3. Set `{{token}}` in the collection variable with the token you receive\n\n## Public Endpoints (no auth needed)\n- GET all posts\n- GET post by ID\n- GET posts by user\n- GET comments for a post\n- GET user by username\n\n## Protected Endpoints (require JWT token)\n- Create post\n- Delete post (only your own)\n- Add comment\n- Delete comment (only your own)\n- Like a post\n- Remove a like (only your own)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "paste_your_jwt_token_here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\",\n  \"fullName\": \"John Doe\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Account created successfully\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9...\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 400 Validation",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"success\": false,\n  \"message\": \"email: must be a valid email address\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('token', res.data.token);",
+                  "    console.log('Token saved to collection variable: token');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securepassword123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9...\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 400 Wrong Credentials",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Invalid email or password\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Create Post (🔒 Auth Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caption\": \"Just had an amazing coffee!\",\n  \"imageUrl\": \"https://example.com/coffee.jpg\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post created successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"caption\": \"Just had an amazing coffee!\",\n    \"imageUrl\": \"https://example.com/coffee.jpg\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 401 No Token",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You need to authenticate before creating a post\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 401 Missing Header",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Authorization header is missing. Please login to continue.\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Posts (🌐 Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Posts fetched successfully\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"caption\": \"Just had an amazing coffee!\",\n      \"imageUrl\": \"https://example.com/coffee.jpg\"\n    }\n  ],\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Post By ID (🌐 Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post fetched successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"caption\": \"Just had an amazing coffee!\",\n    \"imageUrl\": \"https://example.com/coffee.jpg\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Post with id 999 does not exist\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Posts By User ID (🌐 Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/user/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "user", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Posts fetched successfully\",\n  \"data\": [],\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Post (🔒 Auth Required — Owner Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post deleted successfully\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 403 Not Your Post",
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You are not authorized to delete this post\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 404 Post Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Post with id 1 does not exist\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Comment (🔒 Auth Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Great post! Love the vibe.\",\n  \"postId\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Comment added successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"content\": \"Great post! Love the vibe.\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 401 Not Authenticated",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You need to authenticate before adding a comment\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 404 Post Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Post with id 1 does not exist\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Comments By Post ID (🌐 Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/post/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments", "post", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Comments fetched successfully\",\n  \"data\": [\n    { \"id\": 1, \"content\": \"Great post!\" }\n  ],\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Comment (🔒 Auth Required — Owner Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Comment deleted successfully\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 403 Not Your Comment",
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You are not authorized to delete this comment\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Likes",
+      "item": [
+        {
+          "name": "Like a Post (🔒 Auth Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/likes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "likes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"postId\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Post liked successfully\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 401 Not Authenticated",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You need to authenticate before liking a post\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Remove Like (🔒 Auth Required — Owner Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/likes/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "likes", "1"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"Like removed successfully\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 403 Not Your Like",
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{\n  \"success\": false,\n  \"message\": \"You are not authorized to remove this like\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User By Username (🌐 Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/johndoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "johndoe"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success - 200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"message\": \"User fetched successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"username\": \"johndoe\",\n    \"email\": \"john@example.com\",\n    \"fullName\": \"John Doe\"\n  },\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            },
+            {
+              "name": "Error - 404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"success\": false,\n  \"message\": \"User with username 'johndoe' does not exist\",\n  \"data\": null,\n  \"timestamp\": \"2026-02-26T19:00:00\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

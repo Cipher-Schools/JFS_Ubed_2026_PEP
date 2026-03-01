@@ -27,8 +27,10 @@ public class PostService {
 
     @Transactional
     public PostResponse createPost(String authHeader, CreatePostRequest request) {
+        // Extract the user from the JWT Token; if invalid, it throws an exception
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before creating a post");
 
+        // Create a new Post object and set the provided details
         Post post = new Post();
         post.setCaption(request.getCaption());
         post.setImageUrl(request.getImageUrl());
@@ -58,9 +60,10 @@ public class PostService {
 
     @Transactional
     public void deletePostById(String authHeader, long id) {
-        //if post exists
+        // Verify token and get the user requesting the deletion
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before deleting a post");
 
+        // Fetch the post from the database or throw an error if not found
         Post post = postRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post with id " + id + " does not exist"));
 

@@ -30,11 +30,14 @@ public class CommentService {
 
     @Transactional
     public CommentResponse addComment(String authHeader, CreateCommentRequest request) {
+        // Verify the JWT token and get the currently logged-in user
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before adding a comment");
 
+        // Ensure the post we are commenting on actually exists
         Post post = postRepo.findById(request.getPostId())
                 .orElseThrow(() -> new ResourceNotFoundException("Post with id " + request.getPostId() + " does not exist"));
 
+        // Create the comment and link it to the post and user
         Comment comment = new Comment();
         comment.setContent(request.getContent());
         comment.setPost(post);
@@ -56,9 +59,10 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(String authHeader, Long id) {
+        // Authenticate the user trying to perform the deletion
         User currentUser = jwtUtil.extractUser(authHeader, "You need to authenticate before deleting a comment");
 
-        //if(comment exists)
+        // Find the comment to verify it exists
         Comment comment = commentRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment with id " + id + " does not exist"));
 

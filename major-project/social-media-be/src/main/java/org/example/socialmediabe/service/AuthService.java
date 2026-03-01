@@ -21,10 +21,7 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest req) {
-//        if -> to check wether user exists or not
-        //if -> username exists or not
-
-        //Dto -> Entity
+        // Check if the email or username is already registered in the database to avoid duplicates
         if (userRepo.findByEmail(req.getEmail()) != null) {
             throw new IllegalArgumentException("Email is already in use");
         }
@@ -51,6 +48,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest req) {
+        // Fetch the user from the database by email
         User user = userRepo.findByEmail(req.getEmail());
 
         // Use 401 Unauthorized for wrong credentials — not 400 Bad Request

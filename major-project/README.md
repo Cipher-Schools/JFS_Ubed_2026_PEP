@@ -1,12 +1,53 @@
-# Social Media Project - Authentication Concepts
+# Social Media Project
 
-This document explains the authentication mechanisms used in this project. We use **BCrypt** for secure password hashing and **JWT (JSON Web Tokens)** for stateless authentication.
+A full-stack social media application allowing users to create accounts, publish posts, leave comments, and like content. The application is built with a Spring Boot backend and a React (Vite) frontend, featuring a sleek, professional "Pitch Black" minimalistic UI.
 
-## 1. BCrypt - Password Hashing
+## Major Project Features
+
+- **User Authentication**: Secure Login and Registration functionality using BCrypt and JWT.
+- **Content Interaction**:
+  - Logged-in users can create posts, add comments, and like/dislike posts.
+  - Unauthenticated users can view public feeds, posts, comments, and likes.
+- **Robust Backend**: Data integrity ensured via `@Transactional` methods, proper exception handling (e.g., `UnauthorizedException`, `IllegalArgumentException` for duplicate likes), and prevention of circular JSON serialization.
+- **Pitch Black UI**: A modern, premium dark theme frontend using deep blacks and neutral grays, applied across auth pages, feeds, comments, and project layouts.
+
+---
+
+## Client Details (React + Vite)
+
+The frontend is located in the `client/` directory and focuses on a high-performance, premium user experience.
+
+- **Architecture**: React + Vite for fast HMR and modern build tooling.
+- **Routing**: Client-side routing for seamless page transitions (Login, Register, Feed, Post Details).
+- **Styling**: Pure CSS implementing a global "Pitch Black" design system (main background: `#000000`, surface/cards: `#111111`, text: `#ffffff`/`#a0a0a0`).
+- **Components Refactored**: Header, Footer, Post, Feed, Comments, Login, and Register all follow the uniform Pitch Black aesthetic.
+- **API Integration**: RESTful communication with the Spring Boot backend, with JWT tokens stored securely to authorize creation/interaction requests.
+
+To run the client:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+---
+
+## Backend Details (Spring Boot)
+
+The backend is located in the `social-media-be/` directory. We use **BCrypt** for secure password hashing and **JWT (JSON Web Tokens)** for stateless authentication.
+
+### Core Architecture & Validations
+
+- **Data Integrity**: Sensitive data securely hidden using `@JsonIgnoreProperties` and `@JsonIgnore`.
+- **Transactions**: Methods performing multiple database operations use `@Transactional` to guarantee atomicity.
+- **Database**: PostgreSQL handles the persistent and relational data structure.
+
+### 1. BCrypt - Password Hashing
 
 In our backend, we use the `at.favre.lib:bcrypt` library to securely store user passwords in the database. Passwords are never stored in plain text.
 
-### How BCrypt works in our project
+#### How BCrypt works in our project
 
 - **Registration**: When a new user signs up, the `AuthService` extracts the raw password and passes it to the `BCrypt` hashing function with a work factor (log rounds) of `12`.
 
@@ -28,11 +69,11 @@ In our backend, we use the `at.favre.lib:bcrypt` library to securely store user 
 
 ---
 
-## 2. JWT (JSON Web Tokens) - Stateless Authentication
+### 2. JWT (JSON Web Tokens) - Stateless Authentication
 
 We use the `io.jsonwebtoken` (JJWT) library to handle user sessions statelessly. After a successful login, the server issues a JWT instead of keeping a user session in memory.
 
-### How JWT works in our project
+#### How JWT works in our project
 
 - **Token Generation**: Managed by the `JwtUtil` component. Upon successful registration or login, we generate a token setting the user's `email` as the subject. The token uses an HMAC SHA-256 (HS256) signature (seeded by our application's `jwt.secret`) to guarantee its integrity, and includes an `issuedAt` and `expiration` timestamp to ensure it's only valid for a limited time.
 
